@@ -1,0 +1,30 @@
+bitcoin<- read_csv("C:/Users/Student/Desktop/bitcoin training.csv")
+test_bitcoin<- read_csv("C:/Users/Student/Desktop/test bitcoin.csv")
+#Data Cleaning
+bitcoin$Date = NULL
+table(is.na(bitcoin))
+table(is.na(bitcoin$Date)) 
+table(is.na(bitcoin$Open)) 
+table(is.na(bitcoin$High)) 
+table(is.na(bitcoin$Low)) 
+table(is.na(bitcoin$Close)) 
+table(is.na(bitcoin$Volume)) 
+bitcoin.median <- median(bitcoin$Volume, na.rm = TRUE) 
+table(is.na(bitcoin$Volume)) 
+N = nrow(bitcoin)
+obs = test_bitcoin$Open
+linear_model = lm(Open~ ., data = bitcoin)
+View(linear_model)
+step_model= step(linear_model)
+predictions_step = predict(step_model , test_bitcoin)
+predictions_model = predict(linear_model, test_bitcoin)
+errorsstep=  obs - predictions_step
+errorsnorm = obs - predictions_model
+mape_linear = mean(abs(errorsstep)/obs)
+rmse_linear = sqrt(mean(errorsstep^2))
+View(errorsnorm)
+View(errorsstep)
+View(step_model)
+View(test_bitcoin)
+View(mape_linear)
+summary(step_model)
